@@ -387,7 +387,7 @@
 					><code>Nota: <span x-text="getNota()"></span>/7.00
 <!--             -->Rúbrica: <span x-text="selectedRubric"></span>                    
 <!--             --><div x-text="getDescuentos()"></div>
-<!--             -->Comentarios: <span x-text="comentarios"></span>
+<!--             --><template x-if="comentarios"><div>Comentarios: <span x-text="comentarios"></span></div></template>
 <!--             -->Revisado por: <span x-text="revisadoPor"></span></code></pre>
 				</section>
 
