@@ -31,6 +31,7 @@
             checkedItems: {},
             revisadoPor: $persist(''),
             selectedRubric: 'Platformer',
+            comentarios: '',
             getSum(category) {
                 let sum = 0;
                 for (const subcategory in this.rubrics[this.selectedRubric][category]) {
@@ -110,7 +111,7 @@
                     return 'Sin descuentos';
                 }
 
-                return descuentos.join('\n');
+                return 'Descuentos:\n' + descuentos.join('\n');
             },
             clearAll() {
                 Toastify({
@@ -121,6 +122,7 @@
                         }
                     }).showToast();
                 this.checkedItems = {}; // Clears all checkboxes
+                this.comentarios = '';
             },
             copyToClipboard() {
                 const textToCopy = document.querySelector('#results code').innerText;
@@ -370,13 +372,22 @@
 				</ul>
 
 				<section id="results">
+					<label for="comentarios">Comentarios adicionales: </label>
+					<input
+						id="comentarios"
+						type="text"
+						x-model="comentarios"
+						placeholder="..."
+					/>
+
 					<pre
 						class="highlight"
 						readonly
 						rows="10"
 					><code>Nota: <span x-text="getNota()"></span>/7.00
-<!--             -->Descuentos:
+<!--             -->Rúbrica: <span x-text="selectedRubric"></span>                    
 <!--             --><div x-text="getDescuentos()"></div>
+<!--             -->Comentarios: <span x-text="comentarios"></span>
 <!--             -->Revisado por: <span x-text="revisadoPor"></span></code></pre>
 				</section>
 
