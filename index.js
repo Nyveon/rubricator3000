@@ -208,7 +208,7 @@ Nota: <span x-text="getNota()"></span>/7.00
 <!--             -->Revisado por: <span x-text="revisadoPor"></span></code></pre>
 */
 
-function buildOutput(rubric, comentarios, revisadoPor) {
+function buildOutput(rubric, revisadoPor) {
 
     let output = '';
     output += `Nota: ${getNota(rubric).toFixed(2)}/7.00\n`;
@@ -225,8 +225,8 @@ function buildOutput(rubric, comentarios, revisadoPor) {
         output += bonusSummary;
     }
 
-    if (comentarios) {
-        output += `\nComentarios: ${comentarios}\n`;
+    if (rubric.comentarios) {
+        output += `\nComentarios: ${rubric.comentarios}\n`;
     }
 
     output += `\nRevisado por: ${revisadoPor}`;
@@ -358,6 +358,7 @@ interfaceSubrubric = [
 
 platformerRubric = {
 	id: "example-0",
+    comentarios: "",
 	name: "Platformer",
 	rubric: [
 		{
@@ -482,6 +483,7 @@ platformerRubric = {
 
 shooterRubric = {
 	id: "example-1",
+    comentarios: "",
 	name: "Shooter",
 	rubric: [
 		{
@@ -600,6 +602,7 @@ shooterRubric = {
 
 arcadeRubric = {
 	id: "example-2",
+    comentarios: "",
 	name: "Arcade",
 	rubric: [
 		{

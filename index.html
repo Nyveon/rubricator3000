@@ -46,7 +46,6 @@
             editing: false,
             checkedItems: {},
             isModalOpen: false,
-            comentarios: '',
             createNewRubric: function() {
                 let newName = 'rubric-0';
                 let i = 0;
@@ -59,7 +58,8 @@
                 const newRubric = {
                     'id': newId,
                     'name': newName,
-                    'rubric': exampleRubric
+                    'rubric': exampleRubric,
+                    'comentarios': '',
                 }
 
                 this.rubrics[newId] = newRubric;
@@ -100,6 +100,8 @@
                 }).showToast();
             },
             resetRubric: function() {
+                this.rubrics[this.selectedRubric].comentarios = '';
+
                 for (const category of this.rubrics[this.selectedRubric].rubric) {
                     for (const subcategory of category.subcategories) {
                         for (const item of subcategory.criteria) {
@@ -107,6 +109,7 @@
                         }
                     }
                 }
+
                 this.warningToast('Rubrica reseteada');
             },
             copyResultToClipboard: function() {
@@ -428,7 +431,7 @@
 				<input
 					id="comentarios"
 					type="text"
-					x-model="comentarios"
+					x-model="rubrics[selectedRubric].comentarios"
 					placeholder="Comentarios adicionales"
 				/>
 
@@ -437,7 +440,7 @@
 					readonly
 					rows="10"
 					id="result"
-				><code x-text="buildOutput(rubrics[selectedRubric], comentarios, revisadoPor)"></code></pre>
+				><code x-text="buildOutput(rubrics[selectedRubric], revisadoPor)"></code></pre>
 
                 <button @click="copyRubricToClipboard()" title="Copiar rubrica entera al portapapeles" class="info">
                     <i data-feather="download"></i>
