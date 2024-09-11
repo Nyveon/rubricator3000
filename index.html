@@ -13,7 +13,7 @@
 		/>
 		<link rel="stylesheet" href="./index.css" />
 
-		<script src="hardcoded_rubrics.js"></script>
+		<script src="index.js"></script>
 		<script
 			defer
 			src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"
@@ -77,6 +77,13 @@
             deleteCategory: function(index) {
                 this.rubrics[this.selectedRubric].rubric.splice(index, 1);
             },
+            warningToast: function(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    className: 'toast-warning'
+                }).showToast();
+            }
         }"
 		>
             <div class="flex-center">
@@ -242,6 +249,11 @@
                                                     if (!this.newItem.value) {
                                                         this.newItem.value = 0
                                                     }
+                                                    if (isNaN(this.newItem.value)) {
+                                                        this.warningToast('Error en valor del criterio')
+                                                        return;
+                                                    }
+                                                    this.newItem.value = Math.abs(this.newItem.value)
                                                     subcategory.criteria.push(this.newItem)
                                                     this.newItem = structuredClone(itemTemplate)
                                                 }

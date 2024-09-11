@@ -192,3 +192,10 @@ input[type=number] {
     color: var(--text-less);
     border-color: rgba(255, 240, 250, 0.2);
 }
+
+/* Toasts */
+
+.toast-warning {
+    background: linear-gradient(90deg, var(--accent-danger) 0%, var(--accent-danger-light) 100%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
