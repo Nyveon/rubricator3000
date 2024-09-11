@@ -92,6 +92,13 @@
                     className: 'toast-warning'
                 }).showToast();
             },
+            successToast: function(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    className: 'toast-success'
+                }).showToast();
+            },
             resetRubric: function() {
                 for (const category of this.rubrics[this.selectedRubric].rubric) {
                     for (const subcategory of category.subcategories) {
@@ -102,85 +109,99 @@
                 }
                 this.warningToast('Rubrica reseteada');
             },
+            copyResultToClipboard: function() {
+                const textToCopy = document.querySelector('#results code').innerText;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    this.successToast('Copiado al portapapeles');
+                }).catch(err => {
+                    this.warningToast('Error al copiar al portapapeles');
+                });
+            },
+            copyRubricToClipboard: function() {
+                const textToCopy = JSON.stringify(this.rubrics[this.selectedRubric]);
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    this.successToast('Copiado al portapapeles');
+                }).catch(err => {
+                    this.warningToast('Error al copiar al portapapeles');
+                });
+            },
         }"
 		>
-            <div x-show="isModalOpen" class="modal" x-cloak>
-                <div class="modal-content">
-                    <p>¿Estás segurx que quieres eliminar esta rúbrica?</p>
-                    <button @click="deleteRubric()" class="danger">Sí, eliminar</button>
-                    <button @click="isModalOpen = false" class="info">Volver</button>
-                  </div>
-            </div>
+			<div x-show="isModalOpen" class="modal" x-cloak>
+				<div class="modal-content">
+					<p>¿Estás segurx que quieres eliminar esta rúbrica?</p>
+					<button @click="deleteRubric()" class="danger">Sí, eliminar</button>
+					<button @click="isModalOpen = false" class="info">Volver</button>
+				</div>
+			</div>
 
-            <div class="flex-center">
-                <label for="revisadoPor" class="bottom-gap"
-                    >Revisado por:
-                    <input
-                        id="revisadoPor"
-                        type="text"
-                        x-model="revisadoPor"
-                        placeholder="Nombre"
-                /></label>    
-            </div>
-			
-            <div class="flex-center gap-half" x-show="!editing">
-                <b>Rúbrica:</b>
-                <select x-model="selectedRubric" @change="switchedRubric">
-                    <template x-for="[id, rubric] of Object.entries(rubrics)">
-                        <option
-                            x-bind:value="id"
-                            x-text="rubric.name"
-                            :selected="selectedRubric===id"
-                        ></option>
-                    </template>
-                </select>
+			<div class="flex-center">
+				<label for="revisadoPor" class="bottom-gap"
+					>Revisado por:
+					<input
+						id="revisadoPor"
+						type="text"
+						x-model="revisadoPor"
+						placeholder="Nombre"
+				/></label>
+			</div>
 
-                <button @click="createNewRubric()" title="Nueva rúbrica">
-                    <i data-feather="plus-circle"></i>
-                </button>
-                <button
-                    @click="isModalOpen = true"
-                    class="danger"
-                    title="Eliminar rúbrica"
-                >
-                    <i data-feather="trash-2"></i>
-                </button>
-                <button
-                    @click="resetRubric()"
-                    class="yellow"
-                    title="Resetear rúbrica"
-                >
-                    <i data-feather="refresh-ccw"></i>
-                </button>
-                <button
-                    @click="editing=true;feather.replace();"
-                    class="info"
-                    x-transition
-                    title="Editar"
-                >
-                    <i data-feather="edit"></i>
-                </button>
-            </div>
+			<div class="flex-center gap-half" x-show="!editing">
+				<b>Rúbrica:</b>
+				<select x-model="selectedRubric" @change="switchedRubric">
+					<template x-for="[id, rubric] of Object.entries(rubrics)">
+						<option
+							x-bind:value="id"
+							x-text="rubric.name"
+							:selected="selectedRubric===id"
+						></option>
+					</template>
+				</select>
 
-            <div class="flex-center gap-half">
-                <input
-                    id="nombreRubrica"
-                    type="text"
-                    x-model="rubrics[selectedRubric].name"
-                    placeholder="Nombre"
-                    x-cloak
-                    x-show="editing"
-                />
-                <button
-                    @click="editing=false"
-                    class="info"
-                    x-cloak
-                    x-show="editing"
-                    title="Finalizar edición"
-                >
-                    <i data-feather="x"></i>
-                </button>
-            </div>
+				<button @click="createNewRubric()" title="Nueva rúbrica">
+					<i data-feather="plus-circle"></i>
+				</button>
+				<button
+					@click="isModalOpen = true"
+					class="danger"
+					title="Eliminar rúbrica"
+				>
+					<i data-feather="trash-2"></i>
+				</button>
+				<button @click="resetRubric()" class="yellow" title="Resetear rúbrica">
+					<i data-feather="refresh-ccw"></i>
+				</button>
+				<button
+					@click="editing=true;feather.replace();"
+					class="info"
+					x-transition
+					title="Editar"
+				>
+					<i data-feather="edit"></i>
+				</button>
+			</div>
+
+			<div class="flex-center gap-half">
+				<input
+					id="nombreRubrica"
+					type="text"
+					x-model="rubrics[selectedRubric].name"
+					placeholder="Nombre"
+					x-cloak
+					x-show="editing"
+				/>
+				<button
+					@click="editing=false"
+					class="info"
+					x-cloak
+					x-show="editing"
+					title="Finalizar edición"
+				>
+					<i data-feather="x"></i>
+				</button>
+			</div>
 
 			<section>
 				<ul :class="editing ? 'editing' : ''">
@@ -188,10 +209,12 @@
 						x-for="category, index in rubrics[selectedRubric]['rubric']"
 					>
 						<li x-effect="feather.replace()">
-                            <div x-show="!editing">
-                                <code x-text="`${categoryTotal(category).toFixed(2)}/${categoryTotalPossible(category).toFixed(2)}`"></code>
-                                <u x-text="category.name"></u>
-                            </div>
+							<div x-show="!editing">
+								<code
+									x-text="`${categoryTotal(category).toFixed(2)}/${categoryTotalPossible(category).toFixed(2)}`"
+								></code>
+								<u x-text="category.name"></u>
+							</div>
 
 							<div class="inline-edit" x-show="editing" x-cloak>
 								<button
@@ -204,7 +227,9 @@
 									<i data-feather="trash-2"></i>
 								</button>
 								<input type="text" x-model="category.name" />
-                                <span x-text="`=${categoryTotalPossible(category).toFixed(2)}`"></span>
+								<span
+									x-text="`=${categoryTotalPossible(category).toFixed(2)}`"
+								></span>
 							</div>
 
 							<ul>
@@ -212,10 +237,12 @@
 									x-for="(subcategory, index) in category.subcategories"
 								>
 									<li x-effect="feather.replace()">
-                                        <div x-show="!editing">
-                                            <code x-text="`${subcategoryTotal(subcategory).toFixed(2)}/${subcategoryTotalPossible(subcategory).toFixed(2)}`"></code>
-                                            <span x-text="subcategory.name"></span>
-                                        </div>
+										<div x-show="!editing">
+											<code
+												x-text="`${subcategoryTotal(subcategory).toFixed(2)}/${subcategoryTotalPossible(subcategory).toFixed(2)}`"
+											></code>
+											<span x-text="subcategory.name"></span>
+										</div>
 
 										<div class="inline-edit" x-show="editing" x-cloak>
 											<button
@@ -228,7 +255,9 @@
 												<i data-feather="trash-2"></i>
 											</button>
 											<input type="text" x-model="subcategory.name" />
-                                            <span x-text="`=${subcategoryTotalPossible(subcategory).toFixed(2)}`"></span>
+											<span
+												x-text="`=${subcategoryTotalPossible(subcategory).toFixed(2)}`"
+											></span>
 										</div>
 
 										<ul>
@@ -395,20 +424,29 @@
 				</ul>
 			</section>
 
-            <section id="results">
-                <input
-                    id="comentarios"
-                    type="text"
-                    x-model="comentarios"
-                    placeholder="Comentarios adicionales"
-                />
+			<section id="results">
+				<input
+					id="comentarios"
+					type="text"
+					x-model="comentarios"
+					placeholder="Comentarios adicionales"
+				/>
 
-                <pre
-                    class="highlight"
-                    readonly
-                    rows="10"
-                ><code x-text="buildOutput(rubrics[selectedRubric], comentarios, revisadoPor)"></code></pre>
-            </section>
+				<pre
+					class="highlight"
+					readonly
+					rows="10"
+					id="result"
+				><code x-text="buildOutput(rubrics[selectedRubric], comentarios, revisadoPor)"></code></pre>
+
+                <button @click="copyRubricToClipboard()" title="Copiar rubrica entera al portapapeles" class="info">
+                    <i data-feather="download"></i>
+                </button>
+
+                <button @click="copyResultToClipboard()" title="Copiar resultado al portapapeles">
+                    <i data-feather="copy"></i>
+                </button>
+			</section>
 		</main>
 		<footer>Página por: <a href="github.com/Nyveon">Eric K.</a></footer>
 

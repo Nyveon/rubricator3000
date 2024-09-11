@@ -230,6 +230,15 @@ input[type="number"] {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+.toast-success {
+	background: linear-gradient(
+		90deg,
+		var(--accent) 0%,
+        var(--accent-hover) 100%
+	);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 /* Modal */
 
 .modal {
