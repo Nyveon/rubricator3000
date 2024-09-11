@@ -67,7 +67,16 @@
             },
             switchedRubric: function() {
                this.editing = false 
-            }
+            },
+            deleteCriteria: function(subcategory, index) {
+                subcategory.criteria.splice(index, 1);
+            },
+            deleteSubcategory: function(category, index) {
+                category.subcategories.splice(index, 1);
+            },
+            deleteCategory: function(index) {
+                this.rubrics[this.selectedRubric].rubric.splice(index, 1);
+            },
         }"
 		>
 			<label for="revisadoPor" class="bottom-gap"
@@ -103,7 +112,7 @@
 						<i data-feather="trash-2"></i>
 					</button>
 					<button
-						@click="editing=true;"
+						@click="editing=true;feather.replace();"
 						class="info"
 						x-show="!editing"
 						x-transition
@@ -143,22 +152,41 @@
 			<section>
 				<div>todo: Puntos, Bonus, Nota</div>
 
-				<ul>
+				<ul :class="editing ? 'editing' : ''">
 					<template
-						x-for="category in rubrics[selectedRubric]['rubric']"
-						x-init="$nextTick(() => { feather.replace(); })"
+						x-for="category, index in rubrics[selectedRubric]['rubric']"
 					>
 						<li>
 							<u x-text="category.name" x-show="!editing"></u>
 							<div class="inline-edit" x-show="editing" x-cloak>
+								<button
+									x-show="editing"
+									x-cloak
+									class="small-button danger"
+									@click="deleteCategory(index)"
+									title="Eliminar categoría"
+								>
+									<i data-feather="trash-2"></i>
+								</button>
 								<input type="text" x-model="category.name" />
 							</div>
 
 							<ul>
-								<template x-for="subcategory in category.subcategories">
+								<template
+									x-for="(subcategory, index) in category.subcategories"
+								>
 									<li>
 										<span x-text="subcategory.name" x-show="!editing"></span>
 										<div class="inline-edit" x-show="editing" x-cloak>
+											<button
+												x-show="editing"
+												x-cloak
+												class="small-button danger"
+												@click="deleteSubcategory(category, index)"
+												title="Eliminar subcategoría"
+											>
+												<i data-feather="trash-2"></i>
+											</button>
 											<input type="text" x-model="subcategory.name" />
 										</div>
 
@@ -166,6 +194,7 @@
 											<template x-for="(item, index) in subcategory.criteria">
 												<li
 													x-data="{'itemid': `${category}-${subcategory}-${item.name}-${index}`}"
+													x-effect="feather.replace()"
 												>
 													<label :for="itemid" x-show="!editing">
 														<input
@@ -182,6 +211,15 @@
 													</label>
 
 													<div class="inline-edit" x-show="editing" x-cloak>
+														<button
+															x-show="editing"
+															x-cloak
+															class="small-button danger"
+															@click="deleteCriteria(subcategory, index)"
+															title="Eliminar criterio"
+														>
+															<i data-feather="trash-2"></i>
+														</button>
 														<input
 															type="number"
 															x-model="item.value"
@@ -190,43 +228,48 @@
 														/>
 														<input type="text" x-model="item.name" />
 														<select x-model="item.type">
-															<option value=0>Requisito</option>
-															<option value=1>Descuento</option>
-															<option value=2>Bonus</option>
+															<option value="0">Requisito</option>
+															<option value="1">Descuento</option>
+															<option value="2">Bonus</option>
 														</select>
 													</div>
 												</li>
 											</template>
-										</ul>
-										<div
-											class="inline-edit new-edit"
-											x-show="editing"
-											x-cloak
-											x-data="{
+
+											<li
+												class="inline-edit new-edit"
+												x-show="editing"
+												x-cloak
+												x-data="{
                                                 newItem: { ...itemTemplate },
-                                                submit: function() {
+                                                submitCriteria: function() {
                                                     subcategory.criteria.push(this.newItem)
                                                     this.newItem = { ...itemTemplate }
                                                 }
                                             }"
-										>
-											<button class="small-button" @click="submit()">
-												<i data-feather="plus-circle"></i>
-											</button>
+											>
+												<button
+													class="small-button"
+													@click="submitCriteria()"
+													title="Crear criterio"
+												>
+													<i data-feather="plus-circle"></i>
+												</button>
 
-											<input
-												type="number"
-												x-model="newItem.value"
-												min="0"
-												step="0.05"
-											/>
-											<input type="text" x-model="newItem.name" />
-											<select x-model="newItem.type">
-												<option value=0>Requisito</option>
-												<option value=1>Descuento</option>
-												<option value=2>Bonus</option>
-											</select>
-										</div>
+												<input
+													type="number"
+													x-model="newItem.value"
+													min="0"
+													step="0.05"
+												/>
+												<input type="text" x-model="newItem.name" />
+												<select x-model="newItem.type">
+													<option value="0">Requisito</option>
+													<option value="1">Descuento</option>
+													<option value="2">Bonus</option>
+												</select>
+											</li>
+										</ul>
 									</li>
 								</template>
 							</ul>
