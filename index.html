@@ -38,7 +38,11 @@
             }
             // )
             ,
-            selectedRubric: $persist('example-0'),
+            selectedRubric: 
+                // $persist(
+                    'example-0'
+                // )
+                ,
             editing: false,
             checkedItems: {},
             createNewRubric: function() {
@@ -83,7 +87,17 @@
                     duration: 3000,
                     className: 'toast-warning'
                 }).showToast();
-            }
+            },
+            resetRubric: function() {
+                for (const category of this.rubrics[this.selectedRubric].rubric) {
+                    for (const subcategory of category.subcategories) {
+                        for (const item of subcategory.criteria) {
+                            item.checked = false;
+                        }
+                    }
+                }
+                this.warningToast('Rubrica reseteada');
+            },
         }"
 		>
             <div class="flex-center">
@@ -118,6 +132,13 @@
                     title="Eliminar rúbrica"
                 >
                     <i data-feather="trash-2"></i>
+                </button>
+                <button
+                    @click="resetRubric()"
+                    class="yellow"
+                    title="Resetear rúbrica"
+                >
+                    <i data-feather="refresh-ccw"></i>
                 </button>
                 <button
                     @click="editing=true;feather.replace();"

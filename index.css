@@ -23,6 +23,10 @@
     --accent-info: #2f7ed7;
     --accent-info-light: #5da4f6;
     --accent-info-border: #1f6ec7;
+
+    --accent-yellow: #d7b92f;
+    --accent-yellow-light: #f6d95d;
+    --accent-yellow-border: #c7a81f;
 }
 
 
@@ -103,6 +107,16 @@ button.info {
 button.info:hover {
     background-color: var(--accent-info-light);
     border-color: var(--accent-info-border);
+}
+
+button.yellow {
+    background-color: var(--accent-yellow);
+    border-color: var(--accent-yellow-border);
+}
+
+button.yellow:hover {
+    background-color: var(--accent-yellow-light);
+    border-color: var(--accent-yellow-border);
 }
 
 /* Editing inline */
