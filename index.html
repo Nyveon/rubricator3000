@@ -130,13 +130,48 @@
                     this.warningToast('Error al copiar al portapapeles');
                 });
             },
+            isUploadModalOpen: false,
+            uploadRubric: function() {
+                const textarea = document.querySelector('#rubricUpload');
+                const textToParse = textarea.value;
+                let parsedRubric;
+                try {
+                    parsedRubric = JSON.parse(textToParse);
+                } catch (e) {
+                    this.warningToast('Error al cargar la rúbrica');
+                    return;
+                }
+
+                const newId = `custom-${Date.now()}`;
+                parsedRubric.id = newId;
+                this.rubrics[newId] = parsedRubric;
+                this.selectedRubric = newId;
+                this.switchedRubric();
+                this.isUploadModalOpen = false;
+                this.successToast('Rúbrica cargada');
+
+                textarea.value = '';
+            },
         }"
 		>
 			<div x-show="isModalOpen" class="modal" x-cloak>
 				<div class="modal-content">
 					<p>¿Estás segurx que quieres eliminar esta rúbrica?</p>
-					<button @click="deleteRubric()" class="danger">Sí, eliminar</button>
-					<button @click="isModalOpen = false" class="info">Volver</button>
+                    <div>
+                        <button @click="deleteRubric()" class="danger">Sí, eliminar</button>
+                        <button @click="isModalOpen = false" class="info">Volver</button>
+                    </div>
+				</div>
+			</div>
+
+            <div x-show="isUploadModalOpen" class="modal" x-cloak>
+				<div class="modal-content">
+                    <p>Sube una rúbrica:</p>
+                    <textarea id="rubricUpload"></textarea>
+                    <div>
+                        <button @click="uploadRubric()">Cargar</button>
+                        <button @click="isUploadModalOpen = false" class="info">Cerrar</button>
+                    </div>
 				</div>
 			</div>
 
@@ -165,6 +200,9 @@
 
 				<button @click="createNewRubric()" title="Nueva rúbrica">
 					<i data-feather="plus-circle"></i>
+				</button>
+                <button @click="isUploadModalOpen = true" title="Cargar rúbrica">
+					<i data-feather="upload"></i>
 				</button>
 				<button
 					@click="isModalOpen = true"
