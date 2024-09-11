@@ -215,6 +215,10 @@ input[type="number"] {
 	border-color: rgba(255, 240, 250, 0.2);
 }
 
+#comentarios {
+    width: 100%;
+}
+
 /* Toasts */
 
 .toast-warning {
@@ -248,3 +252,4 @@ input[type="number"] {
 	padding: 20px;
 	z-index: 10000;
 }
+

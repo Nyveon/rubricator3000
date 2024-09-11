@@ -46,6 +46,7 @@
             editing: false,
             checkedItems: {},
             isModalOpen: false,
+            comentarios: '',
             createNewRubric: function() {
                 let newName = 'rubric-0';
                 let i = 0;
@@ -394,8 +395,20 @@
 				</ul>
 			</section>
 
-			<!-- Copy grading results -->
-			<section>Resultado</section>
+            <section id="results">
+                <input
+                    id="comentarios"
+                    type="text"
+                    x-model="comentarios"
+                    placeholder="Comentarios adicionales"
+                />
+
+                <pre
+                    class="highlight"
+                    readonly
+                    rows="10"
+                ><code x-text="buildOutput(rubrics[selectedRubric], comentarios, revisadoPor)"></code></pre>
+            </section>
 		</main>
 		<footer>Página por: <a href="github.com/Nyveon">Eric K.</a></footer>
 
