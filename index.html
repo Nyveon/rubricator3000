@@ -13,7 +13,6 @@
 		/>
 		<link rel="stylesheet" href="./index.css" />
 
-		<script src="./index.js"></script>
 		<script
 			defer
 			src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"
@@ -23,377 +22,54 @@
 			src="https://cdn.jsdelivr.net/npm/toastify-js"
 		></script>
 		<script defer src="//unpkg.com/alpinejs"></script>
+
+        <script src="hardcoded_rubrics.js"></script>
 	</head>
 	<body>
-		<main
-			x-data="
-        {
-            checkedItems: {},
+        <main x-data="{
             revisadoPor: $persist(''),
-            selectedRubric: 'Platformer',
-            comentarios: '',
-            getSum(category) {
-                let sum = 0;
-                for (const subcategory in this.rubrics[this.selectedRubric][category]) {
-                    for (const criteria in this.rubrics[this.selectedRubric][category][subcategory]) {
-                        if (this.checkedItems[`${category}-${subcategory}-${criteria}`]) {
-                            sum += this.rubrics[this.selectedRubric][category][subcategory][criteria];
-                        }
-                    }
-                }
-                return sum.toFixed(2);
+            customRubrics: $persist([{'id': 'test', 'name': 'test', 'rubric': {}}]), //todo: persist
+            hardcodedRubrics: [platformerRubric, shooterRubric, arcadeRubric],
+            getAvailableRubrics: function() {
+                return {
+                    ...Object.fromEntries(this.customRubrics.map(rubric => [rubric.id, rubric])),
+                    ...Object.fromEntries(this.hardcodedRubrics.map(rubric => [rubric.id, rubric]))
+                };
             },
-            getTotal(category) {
-                let total = 0;
-                for (const subcategory in this.rubrics[this.selectedRubric][category]) {
-                    for (const criteria in this.rubrics[this.selectedRubric][category][subcategory]) {
-                        total += this.rubrics[this.selectedRubric][category][subcategory][criteria];
-                    }
-                }
-                return total.toFixed(2);
-            },
-            getTotalSumInt() {
-                let totalSum = 0;
-                for (const category in this.rubrics[this.selectedRubric]) {
-                    for (const subcategory in this.rubrics[this.selectedRubric][category]) {
-                        for (const criteria in this.rubrics[this.selectedRubric][category][subcategory]) {
-                            if (this.checkedItems[`${category}-${subcategory}-${criteria}`]) {
-                                totalSum += this.rubrics[this.selectedRubric][category][subcategory][criteria];
-                            }
-                        }
-                    }
-                }
-                return totalSum;
-            },
-            getGrandTotal() {
-                let grandTotal = 0;
-                for (const category in this.rubrics[this.selectedRubric]) {
-                    for (const subcategory in this.rubrics[this.selectedRubric][category]) {
-                        for (const criteria in this.rubrics[this.selectedRubric][category][subcategory]) {
-                            grandTotal += this.rubrics[this.selectedRubric][category][subcategory][criteria];
-                        }
-                    }
-                }
-                return grandTotal.toFixed(2);
-            },
-            getNota() {
-                return (1 + this.getTotalSumInt() / this.getGrandTotal() * 6).toFixed(2);
-            },
-            getDescuentos() {
-                let descuentos = [];
-                for (const category in this.rubrics[this.selectedRubric]) {
-                    let categoryDescuentos = '';
-                    let categoryHasDescuentos = false;
+            selectedRubric: $persist('0'),
+            createNewRubric: function() {
+                let newName = 'rubric-0';
+                let i = 0;
+                while (newName in this.customRubrics) {
+                    newName = `rubric-${i}`;
+                } 
 
-                    for (const subcategory in this.rubrics[this.selectedRubric][category]) {
-                        let subcategoryDescuentos = '';
-                        let subcategoryHasDescuentos = false;
-
-                        for (const criteria in this.rubrics[this.selectedRubric][category][subcategory]) {
-                            if (!this.checkedItems[`${category}-${subcategory}-${criteria}`]) {
-                                subcategoryDescuentos += `  -${this.rubrics[this.selectedRubric][category][subcategory][criteria].toFixed(2)} | ${criteria}\n`;
-                                subcategoryHasDescuentos = true;
-                            }
-                        }
-
-                        if (subcategoryHasDescuentos) {
-                            categoryDescuentos += `• ${subcategory}:\n${subcategoryDescuentos}`;
-                            categoryHasDescuentos = true;
-                        }
-                    }
-
-                    if (categoryHasDescuentos) {
-                        descuentos.push(`${category}:\n${categoryDescuentos}`);
-                    }
+                const newRubric = {
+                    'id': `custom-${Date.now()}`,
+                    'name': newName,
+                    'rubric': {}
                 }
 
-                if (descuentos.length === 0) {
-                    return 'Sin descuentos';
-                }
-
-                return 'Descuentos:\n' + descuentos.join('\n');
-            },
-            clearAll() {
-                Toastify({
-                        text: 'Rubrica reseteada',
-                        duration: 3000,
-                        style: {
-                            background: '#1e90ff'
-                        }
-                    }).showToast();
-                this.checkedItems = {}; // Clears all checkboxes
-                this.comentarios = '';
-            },
-            copyToClipboard() {
-                const textToCopy = document.querySelector('#results code').innerText;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    Toastify({
-                        text: 'Copiado al portapapeles',
-                        duration: 3000,
-                        style: {
-                            background: 'green'
-                        }
-                    }).showToast();
-                }).catch(err => {
-                    Toastify({
-                        text: 'Copiado falló',
-                        duration: 3000,
-                        style: {
-                            background: 'red'
-                        }
-                    }).showToast();
-                });
-            },
-            'rubrics': {
-                'Platformer': {
-                    'Jugador': {
-                        'Movimiento': {
-                            'Horizontal': 0.50,
-                            'Salto': 0.50
-                        },
-                        'Sonido': {
-                            'Salto': 0.15
-                        },
-                        'Animaciones': {
-                            'Idle': 0.20,
-                            'Correr': 0.20,
-                            'Salto': 0.20
-                        }
-                    },
-                    'Enemigos & Interacciones': {
-                        'Movimiento': {
-                            'Rebote del jugador al matar enemigo': 0.40
-                        },
-                        'Ataque': {
-                            'Jugador mata enemigo': 1.00,
-                            'Enemigo mata jugador': 1.00
-                        },
-                        'Sonido': {
-                            'Ataque direccional': 0.10
-                        }
-                    },
-                    'Nivel': {
-                        'Diseño': {
-                            'Nivel con plataformas visibles y colisionables': 0.75
-                        }
-                    },
-                    'Interfaz': {
-                        'Menú Principal': {
-                            'Acceder al nivel': 0.10,
-                            'Salir del juego': 0.10
-                        },
-                        'Menú de pausa': {
-                            'Continuar': 0.10,
-                            'Reiniciar': 0.10,
-                            'Volver a menú': 0.10,
-                            'Salir del juego': 0.05
-                        },
-                        'Créditos': {
-                            'Mencionar assets': 0.45
-                        }
-                    }
-                },
-                'Shooter': {
-                    'Jugador': {
-                        'Movimiento': {
-                            'Horizontal': 0.50
-                        },
-                        'Animaciones': {
-                            'Idle': 0.25,
-                            'Movimiento': 0.25,
-                            'Disparo': 0.25
-                        },
-                        'Proyectil': {
-                            'Jugador puede disparar (crear un proyectil)': 0.50
-                        },
-                        'Sonido': {
-                            'Disparo': 0.25
-                        }
-                    },
-                    'Enemigo & Interacciones': {
-                        'Proyectil': {
-                            'Se mueve': 0.25
-                        },
-                        'Ataque': {
-                            'Proyectil mata enemigo': 1.00,
-                            'Enemigo mata jugador': 1.00
-                        },
-                    },
-                    'Nivel': {
-                        'Diseño': {
-                            'Nivel con bloques visibles y colisionables': 0.75
-                        }
-                    },
-                    'Interfaz': {
-                        'Menú Principal': {
-                            'Acceder al nivel': 0.10,
-                            'Salir del juego': 0.10
-                        },
-                        'Menú de pausa': {
-                            'Continuar': 0.10,
-                            'Reiniciar': 0.10,
-                            'Volver a menú': 0.10,
-                            'Salir del juego': 0.05
-                        },
-                        'Créditos': {
-                            'Mencionar assets': 0.45
-                        }
-                    }
-                },
-                'Arcade': {
-                    'Jugador': {
-                        'Movimiento': {
-                            'Multidireccional': 1.00
-                        },
-                        'Animaciones': {
-                            'Idle': 0.25,
-                            'Movimiento': 0.25,
-                            'Recolección': 0.25
-                        }
-                    },
-                    'Enemigo & Interacciones': {
-                        'Consumible': {
-                            'Se puede recoger': 1.00
-                        },
-                        'Sonido': {
-                            'Recolección de consumible': 0.25,
-                            'Muerte de jugador': 0.25
-                        },
-                        'Ataque': {
-                            'Enemigo mata jugador': 1.00
-                        }
-                    },
-                    'Nivel': {
-                        'Diseño': {
-                            'Nivel con muros visibles y colisionables': 0.75
-                        }
-                    },
-                    'Interfaz': {
-                        'Menú Principal': {
-                            'Acceder al nivel': 0.10,
-                            'Salir del juego': 0.10
-                        },
-                        'Menú de pausa': {
-                            'Continuar': 0.10,
-                            'Reiniciar': 0.10,
-                            'Volver a menú': 0.10,
-                            'Salir del juego': 0.05
-                        },
-                        'Créditos': {
-                            'Mencionar assets': 0.45
-                        }
-                    }
-                }
+                this.customRubrics.push(newRubric);
+                this.selectedRubric = newRubric.id;
             }
-        }
-    "
-		>
-			<h1>Rubricador3000</h1>
+        }">
+            <select x-model="selectedRubric">
+                <template x-for="[id, rubric] of Object.entries(getAvailableRubrics())">
+                    <option x-bind:value="id" x-text="rubric.name" :selected="selectedRubric===id"></option>
+                </template>
+            </select>
 
-			<div id="tabs">
-				<button
-					@click="selectedRubric = 'Platformer'"
-					class="tab"
-					:class="selectedRubric == 'Platformer' ? 'active' : ''"
-				>
-					Platformer
-				</button>
-				<button
-					@click="selectedRubric = 'Shooter'"
-					class="tab"
-					:class="selectedRubric == 'Shooter' ? 'active' : ''"
-				>
-					Shooter
-				</button>
-				<button
-					@click="selectedRubric = 'Arcade'"
-					class="tab"
-					:class="selectedRubric == 'Arcade' ? 'active' : ''"
-				>
-					Arcade
-				</button>
-			</div>
+            <!-- Create new rubric -->
+            <button @click="createNewRubric()">Crear nueva rúbrica</button>
 
-			<label for="revisadoPor"
-				>Revisado por:
-				<input
-					id="revisadoPor"
-					type="text"
-					x-model="revisadoPor"
-					placeholder="Nombre"
-			/></label>
+            <div x-text="JSON.stringify(getAvailableRubrics())"></div>
 
-			<div>
-				<div class="sticky">
-					<b>Nota: <code x-text="getNota()"></code></b>
-				</div>
-				<div>
-					Puntos:
-					<code
-						x-text="getTotalSumInt().toFixed(2) + ' / ' + getGrandTotal()"
-					></code>
-				</div>
-
-				<ul>
-					<template x-for="(value, category) in rubrics[selectedRubric]">
-						<li>
-							<code
-								x-text="`(${getSum(category)}/${getTotal(category)})`"
-							></code>
-							<u x-text="category"></u>
-							<ul>
-								<template x-for="(subvalue, subcategory) in value">
-									<li>
-										<span x-text="subcategory"></span>
-										<ul>
-											<template x-for="(worth, criteria) in subvalue">
-												<li
-													x-data="{'itemid': `${category}-${subcategory}-${criteria}`}"
-												>
-													<input
-														:id="itemid"
-														:name="itemid"
-														type="checkbox"
-														x-model="checkedItems[itemid]"
-													/>
-													<label :for="itemid">
-														<code x-text="`[${worth.toFixed(2)}]`"></code>
-														<span x-text="criteria"></span>
-													</label>
-												</li>
-											</template>
-										</ul>
-									</li>
-								</template>
-							</ul>
-						</li>
-					</template>
-				</ul>
-
-				<section id="results">
-					<label for="comentarios">Comentarios adicionales: </label>
-					<input
-						id="comentarios"
-						type="text"
-						x-model="comentarios"
-						placeholder="..."
-					/>
-
-					<pre
-						class="highlight"
-						readonly
-						rows="10"
-					><code>Nota: <span x-text="getNota()"></span>/7.00
-<!--             -->Rúbrica: <span x-text="selectedRubric"></span>                    
-<!--             --><div x-text="getDescuentos()"></div>
-<!--             --><template x-if="comentarios"><div>Comentarios: <span x-text="comentarios"></span></div></template>
-<!--             -->Revisado por: <span x-text="revisadoPor"></span></code></pre>
-				</section>
-
-				<button @click="copyToClipboard()">Copiar</button>
-				<button @click="clearAll()" class="danger">Reset</button>
-			</div>
-		</main>
-	</body>
+            <!-- Grade with selected rubric -->
+            <!-- Copy grading results -->
+        </main>
+        <footer>
+            Página por: <a href="github.com/Nyveon">Eric K.</a>
+        </footer>
+    </body>
 </html>
