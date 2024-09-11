@@ -1,3 +1,9 @@
+const itemTemplate = {
+    value: 0,
+    name: 'Nuevo Criterio',
+    type: 0
+}
+
 const ItemType = {
 	REQUIREMENT: 0,
 	DISCOUNT: 1,
