@@ -20,7 +20,7 @@
     --accent-danger-border: #a92828;
 
     --accent-info: #2f7ed7;
-    --accent-info-light: #3f8ee7;
+    --accent-info-light: #5da4f6;
     --accent-info-border: #1f6ec7;
 }
 
@@ -102,6 +102,20 @@ button.info {
 button.info:hover {
     background-color: var(--accent-info-light);
     border-color: var(--accent-info-border);
+}
+
+/* Criteria */
+
+code.requirement {
+    color: var(--accent-info-light)
+}
+
+code.bonus {
+    color: var(--accent)
+}
+
+code.discount {
+    color: var(--accent-danger)
 }
 
 /* Other */

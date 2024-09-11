@@ -30,11 +30,15 @@
 		<main
 			x-data="{
             revisadoPor: $persist(''),
-            rubrics: $persist({
+            rubrics: 
+            // $persist(
+                {
                 'example-0': platformerRubric,
                 'example-1': shooterRubric,
                 'example-2': arcadeRubric
-            }),
+            }
+            // )
+            ,
             selectedRubric: $persist('example-0'),
             editing: false,
             createNewRubric: function() {
@@ -49,7 +53,7 @@
                 const newRubric = {
                     'id': newId,
                     'name': newName,
-                    'rubric': {}
+                    'rubric': exampleRubric
                 }
 
                 this.rubrics[newId] = newRubric;
@@ -150,9 +154,10 @@
                                         <span x-text="subcategory"></span>
 
                                         <ul>
-                                            <template x-for="(value, item) in items">
+                                            <template x-for="item in items">
                                                 <li>
-                                                    <span x-text="item"></span>
+                                                    <code x-text="formatTypeAndValue(item.type, item.value)" :class="typeToClass(item.type)"></code>
+                                                    <span x-text="item.name"></span>
                                                 </li>
                                             </template>
                                         </ul>
