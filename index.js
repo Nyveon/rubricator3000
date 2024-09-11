@@ -28,7 +28,7 @@ const categoryTemplate = {
 };
 
 function formatTypeAndValue(type, value) {
-	const formattedValue = value.toFixed(2);
+	const formattedValue = parseFloat(value).toFixed(2);
 
 	switch (type) {
 		case ItemType.REQUIREMENT:
@@ -50,6 +50,50 @@ function typeToClass(type) {
 			return "bonus";
 	}
 }
+
+
+function subcategoryTotalPossible(subcategory) {
+    return subcategory.criteria.reduce((acc, criterion) => {
+        if (criterion.type === ItemType.REQUIREMENT) {
+            return acc + parseFloat(criterion.value);
+        } else {
+            return acc;
+        }
+    }, 0);
+}
+
+function subcategoryTotal(subcategory) {
+    const possible = subcategoryTotalPossible(subcategory);
+
+    return subcategory.criteria.reduce((acc, criterion) => {
+        if (criterion.checked) {
+            const parsed = parseFloat(criterion.value);
+
+            switch (criterion.type) {
+                case ItemType.REQUIREMENT:
+                    return acc + parsed;
+                case ItemType.DISCOUNT:
+                    return Math.max(acc - parsed, 0);
+                case ItemType.BONUS:
+                    return acc + parsed;
+            }
+        }
+        return acc;
+    }, 0);
+}
+
+function categoryTotalPossible(category) {
+    return category.subcategories.reduce((acc, subcategory) => {
+        return acc + subcategoryTotalPossible(subcategory);
+    }, 0);
+}
+
+function categoryTotal(category) {
+    return category.subcategories.reduce((acc, subcategory) => {
+        return acc + subcategoryTotal(subcategory);
+    }, 0);
+}
+
 
 exampleRubric = [
 	{

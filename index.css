@@ -80,6 +80,12 @@ div.strong {
 	height: 100%;
 }
 
+code {
+    color: var(--text-less);
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+}
+
 /* Buttons */
 
 button > svg {

@@ -182,14 +182,16 @@
             </div>
 
 			<section>
-				<div>todo: Puntos, Bonus, Nota</div>
-
 				<ul :class="editing ? 'editing' : ''">
 					<template
 						x-for="category, index in rubrics[selectedRubric]['rubric']"
 					>
 						<li x-effect="feather.replace()">
-							<u x-text="category.name" x-show="!editing"></u>
+                            <div x-show="!editing">
+                                <code x-text="`${categoryTotal(category).toFixed(2)}/${categoryTotalPossible(category).toFixed(2)}`"></code>
+                                <u x-text="category.name"></u>
+                            </div>
+
 							<div class="inline-edit" x-show="editing" x-cloak>
 								<button
 									x-show="editing"
@@ -201,6 +203,7 @@
 									<i data-feather="trash-2"></i>
 								</button>
 								<input type="text" x-model="category.name" />
+                                <span x-text="`=${categoryTotalPossible(category).toFixed(2)}`"></span>
 							</div>
 
 							<ul>
@@ -208,7 +211,11 @@
 									x-for="(subcategory, index) in category.subcategories"
 								>
 									<li x-effect="feather.replace()">
-										<span x-text="subcategory.name" x-show="!editing"></span>
+                                        <div x-show="!editing">
+                                            <code x-text="`${subcategoryTotal(subcategory).toFixed(2)}/${subcategoryTotalPossible(subcategory).toFixed(2)}`"></code>
+                                            <span x-text="subcategory.name"></span>
+                                        </div>
+
 										<div class="inline-edit" x-show="editing" x-cloak>
 											<button
 												x-show="editing"
@@ -220,6 +227,7 @@
 												<i data-feather="trash-2"></i>
 											</button>
 											<input type="text" x-model="subcategory.name" />
+                                            <span x-text="`=${subcategoryTotalPossible(subcategory).toFixed(2)}`"></span>
 										</div>
 
 										<ul>
