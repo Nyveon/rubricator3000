@@ -45,6 +45,7 @@
                 ,
             editing: false,
             checkedItems: {},
+            isModalOpen: false,
             createNewRubric: function() {
                 let newName = 'rubric-0';
                 let i = 0;
@@ -68,9 +69,11 @@
                 delete this.rubrics[this.selectedRubric];
                 this.selectedRubric = Object.keys(this.rubrics)[0];
                 this.switchedRubric();
+                this.warningToast('Rubrica eliminada');
             },
             switchedRubric: function() {
-               this.editing = false 
+                this.isModalOpen = false;
+                this.editing = false 
             },
             deleteCriteria: function(subcategory, index) {
                 subcategory.criteria.splice(index, 1);
@@ -100,6 +103,14 @@
             },
         }"
 		>
+            <div x-show="isModalOpen" class="modal" x-cloak>
+                <div class="modal-content">
+                    <p>¿Estás segurx que quieres eliminar esta rúbrica?</p>
+                    <button @click="deleteRubric()" class="danger">Sí, eliminar</button>
+                    <button @click="isModalOpen = false" class="info">Volver</button>
+                  </div>
+            </div>
+
             <div class="flex-center">
                 <label for="revisadoPor" class="bottom-gap"
                     >Revisado por:
@@ -127,7 +138,7 @@
                     <i data-feather="plus-circle"></i>
                 </button>
                 <button
-                    @click="deleteRubric()"
+                    @click="isModalOpen = true"
                     class="danger"
                     title="Eliminar rúbrica"
                 >
