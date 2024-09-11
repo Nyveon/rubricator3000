@@ -110,7 +110,7 @@
                     }
                 }
 
-                this.warningToast('Rubrica reseteada');
+                this.successToast('Rubrica reseteada');
             },
             copyResultToClipboard: function() {
                 const textToCopy = document.querySelector('#results code').innerText;
@@ -157,21 +157,23 @@
 			<div x-show="isModalOpen" class="modal" x-cloak>
 				<div class="modal-content">
 					<p>¿Estás segurx que quieres eliminar esta rúbrica?</p>
-                    <div>
-                        <button @click="deleteRubric()" class="danger">Sí, eliminar</button>
-                        <button @click="isModalOpen = false" class="info">Volver</button>
-                    </div>
+					<div>
+						<button @click="deleteRubric()" class="danger">Sí, eliminar</button>
+						<button @click="isModalOpen = false" class="info">Volver</button>
+					</div>
 				</div>
 			</div>
 
-            <div x-show="isUploadModalOpen" class="modal" x-cloak>
+			<div x-show="isUploadModalOpen" class="modal" x-cloak>
 				<div class="modal-content">
-                    <p>Sube una rúbrica:</p>
-                    <textarea id="rubricUpload"></textarea>
-                    <div>
-                        <button @click="uploadRubric()">Cargar</button>
-                        <button @click="isUploadModalOpen = false" class="info">Cerrar</button>
-                    </div>
+					<p>Sube una rúbrica:</p>
+					<textarea id="rubricUpload"></textarea>
+					<div>
+						<button @click="uploadRubric()">Cargar</button>
+						<button @click="isUploadModalOpen = false" class="info">
+							Cerrar
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -201,7 +203,7 @@
 				<button @click="createNewRubric()" title="Nueva rúbrica">
 					<i data-feather="plus-circle"></i>
 				</button>
-                <button @click="isUploadModalOpen = true" title="Cargar rúbrica">
+				<button @click="isUploadModalOpen = true" title="Cargar rúbrica">
 					<i data-feather="upload"></i>
 				</button>
 				<button
@@ -480,13 +482,20 @@
 					id="result"
 				><code x-text="buildOutput(rubrics[selectedRubric], revisadoPor)"></code></pre>
 
-                <button @click="copyRubricToClipboard()" title="Copiar rubrica entera al portapapeles" class="info">
-                    <i data-feather="download"></i>
-                </button>
+				<button
+					@click="copyRubricToClipboard()"
+					title="Copiar rubrica entera al portapapeles"
+					class="info"
+				>
+					<i data-feather="download"></i>
+				</button>
 
-                <button @click="copyResultToClipboard()" title="Copiar resultado al portapapeles">
-                    <i data-feather="copy"></i>
-                </button>
+				<button
+					@click="copyResultToClipboard()"
+					title="Copiar resultado al portapapeles"
+				>
+					<i data-feather="copy"></i>
+				</button>
 			</section>
 		</main>
 		<footer>Página por: <a href="github.com/Nyveon">Eric K.</a></footer>
