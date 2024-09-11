@@ -61,7 +61,7 @@
             }
         }"
 		>
-			<label for="revisadoPor"
+			<label for="revisadoPor" class="bottom-gap"
 				>Revisado por:
 				<input
 					id="revisadoPor"
@@ -72,9 +72,8 @@
 
 			<div class="flex-space">
 				<div class="flex-center gap-half">
-					<select x-model="selectedRubric"
-                        @change="editingName=false"
-                    >
+					<b>Rúbrica:</b>
+					<select x-model="selectedRubric" @change="editingName=false">
 						<template x-for="[id, rubric] of Object.entries(rubrics)">
 							<option
 								x-bind:value="id"
@@ -84,10 +83,14 @@
 						</template>
 					</select>
 
-					<button @click="createNewRubric()">
+					<button @click="createNewRubric()" title="Nueva rúbrica">
 						<i data-feather="plus-circle"></i>
 					</button>
-					<button @click="deleteRubric()" class="danger">
+					<button
+						@click="deleteRubric()"
+						class="danger"
+						title="Eliminar rúbrica"
+					>
 						<i data-feather="trash-2"></i>
 					</button>
 					<button
@@ -95,33 +98,35 @@
 						class="info"
 						x-show="!editingName"
 						x-transition
+						title="Editar nombre"
 					>
 						<i data-feather="type"></i>
 					</button>
 				</div>
 
-                <div class="flex-center gap-half">
-                    <button
-                        @click="editingName=false"
-                        class="info"
-                        x-cloak
-                        x-show="editingName"
-                        x-transition
-                        x-transition:leave.duration.0ms
-                    >
-                        <i data-feather="x"></i>
-                    </button>
-                    <input
-                        id="nombreRubrica"
-                        type="text"
-                        x-model="rubrics[selectedRubric].name"
-                        placeholder="Nombre"
-                        x-cloak
-                        x-show="editingName"
-                        x-transition
-                        x-transition:leave.duration.0ms
-                    />
-                </div>
+				<div class="flex-center gap-half">
+					<button
+						@click="editingName=false"
+						class="info"
+						x-cloak
+						x-show="editingName"
+						x-transition
+						x-transition:leave.duration.0ms
+						title="Finalizar edición"
+					>
+						<i data-feather="x"></i>
+					</button>
+					<input
+						id="nombreRubrica"
+						type="text"
+						x-model="rubrics[selectedRubric].name"
+						placeholder="Nombre"
+						x-cloak
+						x-show="editingName"
+						x-transition
+						x-transition:leave.duration.0ms
+					/>
+				</div>
 			</div>
 
 			<!-- Grade with selected rubric -->
