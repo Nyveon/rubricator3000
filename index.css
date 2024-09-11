@@ -5,6 +5,7 @@
 :root{
     --text: #f7eeee;
     --text-light: #fff8e4;
+    --text-less: #c3c0bb;
     --bg: #1f1f1f;
     --accent-bg: #2f2f2f;
     --preformatted: #d2cfc7;
@@ -104,6 +105,17 @@ button.info:hover {
     border-color: var(--accent-info-border);
 }
 
+button.small-button {
+    padding: 3px;
+    margin-left: 0.75rem;
+}
+
+button.small-button>svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+
 /* Criteria */
 
 code.requirement {
@@ -162,4 +174,9 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+.new-edit > input, .new-edit > select {
+    color: var(--text-less);
+    border-color: rgba(255, 240, 250, 0.2);
 }

@@ -1,8 +1,14 @@
 const ItemType = {
-	REQUIREMENT: "0",
-	DISCOUNT: "1",
-	BONUS: "2",
+	REQUIREMENT: 0,
+	DISCOUNT: 1,
+	BONUS: 2,
 };
+
+const ItemTypeName = {
+    [ItemType.REQUIREMENT]: "Requisito",
+    [ItemType.DISCOUNT]: "Descuento",
+    [ItemType.BONUS]: "Bonus",
+}
 
 function formatTypeAndValue(type, value) {
 	const formattedValue = value.toFixed(2);
