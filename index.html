@@ -30,18 +30,18 @@
 			x-data="{
             revisadoPor: $persist(''),
             rubrics: 
-            // $persist(
+            $persist(
                 {
                 'example-0': platformerRubric,
                 'example-1': shooterRubric,
                 'example-2': arcadeRubric
             }
-            // )
+            )
             ,
             selectedRubric: 
-                // $persist(
+                $persist(
                     'example-0'
-                // )
+                )
                 ,
             editing: false,
             checkedItems: {},
