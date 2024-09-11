@@ -79,73 +79,68 @@
             },
         }"
 		>
-			<label for="revisadoPor" class="bottom-gap"
-				>Revisado por:
-				<input
-					id="revisadoPor"
-					type="text"
-					x-model="revisadoPor"
-					placeholder="Nombre"
-			/></label>
+            <div class="flex-center">
+                <label for="revisadoPor" class="bottom-gap"
+                    >Revisado por:
+                    <input
+                        id="revisadoPor"
+                        type="text"
+                        x-model="revisadoPor"
+                        placeholder="Nombre"
+                /></label>    
+            </div>
+			
+            <div class="flex-center gap-half" x-show="!editing">
+                <b>Rúbrica:</b>
+                <select x-model="selectedRubric" @change="switchedRubric">
+                    <template x-for="[id, rubric] of Object.entries(rubrics)">
+                        <option
+                            x-bind:value="id"
+                            x-text="rubric.name"
+                            :selected="selectedRubric===id"
+                        ></option>
+                    </template>
+                </select>
 
-			<div class="flex-space column-when-small gap-half">
-				<div class="flex-center gap-half">
-					<b>Rúbrica:</b>
-					<select x-model="selectedRubric" @change="switchedRubric">
-						<template x-for="[id, rubric] of Object.entries(rubrics)">
-							<option
-								x-bind:value="id"
-								x-text="rubric.name"
-								:selected="selectedRubric===id"
-							></option>
-						</template>
-					</select>
+                <button @click="createNewRubric()" title="Nueva rúbrica">
+                    <i data-feather="plus-circle"></i>
+                </button>
+                <button
+                    @click="deleteRubric()"
+                    class="danger"
+                    title="Eliminar rúbrica"
+                >
+                    <i data-feather="trash-2"></i>
+                </button>
+                <button
+                    @click="editing=true;feather.replace();"
+                    class="info"
+                    x-transition
+                    title="Editar"
+                >
+                    <i data-feather="edit"></i>
+                </button>
+            </div>
 
-					<button @click="createNewRubric()" title="Nueva rúbrica">
-						<i data-feather="plus-circle"></i>
-					</button>
-					<button
-						@click="deleteRubric()"
-						class="danger"
-						title="Eliminar rúbrica"
-					>
-						<i data-feather="trash-2"></i>
-					</button>
-					<button
-						@click="editing=true;feather.replace();"
-						class="info"
-						x-show="!editing"
-						x-transition
-						title="Editar"
-					>
-						<i data-feather="edit"></i>
-					</button>
-				</div>
-
-				<div class="flex-center gap-half">
-					<button
-						@click="editing=false"
-						class="info"
-						x-cloak
-						x-show="editing"
-						x-transition
-						x-transition:leave.duration.0ms
-						title="Finalizar edición"
-					>
-						<i data-feather="x"></i>
-					</button>
-					<input
-						id="nombreRubrica"
-						type="text"
-						x-model="rubrics[selectedRubric].name"
-						placeholder="Nombre"
-						x-cloak
-						x-show="editing"
-						x-transition
-						x-transition:leave.duration.0ms
-					/>
-				</div>
-			</div>
+            <div class="flex-center gap-half">
+                <input
+                    id="nombreRubrica"
+                    type="text"
+                    x-model="rubrics[selectedRubric].name"
+                    placeholder="Nombre"
+                    x-cloak
+                    x-show="editing"
+                />
+                <button
+                    @click="editing=false"
+                    class="info"
+                    x-cloak
+                    x-show="editing"
+                    title="Finalizar edición"
+                >
+                    <i data-feather="x"></i>
+                </button>
+            </div>
 
 			<section>
 				<div>todo: Puntos, Bonus, Nota</div>
