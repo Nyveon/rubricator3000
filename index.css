@@ -1,3 +1,7 @@
+/* Config */
+
+[x-cloak] { display: none !important; }
+
 :root{
     --text: #f7eeee;
     --text-light: #fff8e4;
@@ -5,58 +9,74 @@
     --accent-bg: #2f2f2f;
     --preformatted: #d2cfc7;
     --code: #40d181;
+
+    --accent-text: #fffff9;
+
     --accent: #197e4f;
     --accent-hover: #169071;
-    --accent-text: #fffff9;
+
+    --accent-danger: #d72f2f;
+    --accent-danger-light: #ff3939;
+    --accent-danger-border: #a92828;
+
+    --accent-info: #2f7ed7;
+    --accent-info-light: #3f8ee7;
+    --accent-info-border: #1f6ec7;
 }
 
-input[type="checkbox"] {
-    cursor: pointer;
+
+/* Spacing and Layout */
+
+.flex-space {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-label {
-    cursor: pointer;
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gap-half {
+    gap: 0.5rem;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
+
+
+/* Buttons */
+
+button>svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 button.danger {
-    background-color: rgb(215, 49, 49);
-    border-color: #901616;
+    background-color: var(--accent-danger);
+    border-color: var(--accent-danger-border);
 }
 
 button.danger:hover {
-    background-color: rgb(255, 57, 57);
-    border-color: #ab0b0b;
+    background-color: var(--accent-danger-light);
+    border-color: var(--accent-danger-border);
 }
 
-#tabs {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--accent);
+button.info {
+    background-color: var(--accent-info);
+    border-color: var(--accent-info-border);
 }
 
-button.tab {
-    background-color: transparent;
-    border-color: transparent;
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
-}
-
-button.tab.active {
-    background-color: var(--accent);
-    color: var(--accent-text);
-    border-color: var(--accent);
-}
-
-.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    background-color: var(--bg);
-    z-index: 100;
-}
-
-#results {
-    font-size: 0.76rem;
+button.info:hover {
+    background-color: var(--accent-info-light);
+    border-color: var(--accent-info-border);
 }
