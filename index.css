@@ -122,3 +122,44 @@ code.discount {
 select, button, input {
     margin-bottom: 0;
 }
+
+/* Inputs */
+
+label {
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+    margin: 3px;
+}
+
+
+.inline-edit {
+    margin-bottom: 3px;
+}
+
+.inline-edit>input {
+    padding-inline: 3px;
+    padding-block: 1px;
+}
+
+.inline-edit>select {
+    padding-block: 1px;
+    padding-left: 3px;
+    padding-right: 3ch;
+}
+
+.inline-edit>input[type="number"] {
+    width: 6ch;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}

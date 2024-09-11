@@ -41,6 +41,7 @@
             ,
             selectedRubric: $persist('example-0'),
             editing: false,
+            checkedItems: {},
             createNewRubric: function() {
                 let newName = 'rubric-0';
                 let i = 0;
@@ -58,10 +59,12 @@
 
                 this.rubrics[newId] = newRubric;
                 this.selectedRubric = newRubric.id;
+                this.switchedRubric();
             },
             deleteRubric: function() {
                 delete this.rubrics[this.selectedRubric];
                 this.selectedRubric = Object.keys(this.rubrics)[0];
+                this.switchedRubric();
             },
             switchedRubric: function() {
                this.editing = false 
@@ -138,41 +141,68 @@
 
 			<!-- Grade with selected rubric -->
 
-            
-            <section>
-                <div>
-                    todo: Puntos, Bonus, Nota
-                </div>
+			<section>
+				<div>todo: Puntos, Bonus, Nota</div>
 
-                <ul>
-                    <template x-for="(subcategories, category) in rubrics[selectedRubric]['rubric']">
-                        <li>
-                            <u x-text="category"></u>
-                            <ul>
-                                <template x-for="(items, subcategory) in subcategories">
-                                    <li>
-                                        <span x-text="subcategory"></span>
+				<ul>
+					<template
+						x-for="category in rubrics[selectedRubric]['rubric']"
+					>
+						<li>
+							<u x-text="category.name" x-show="!editing"></u>
+                            <div class="inline-edit" x-show="editing">
+                                <input type="text" x-model="category.name" />
+                            </div>
 
-                                        <ul>
-                                            <template x-for="item in items">
-                                                <li>
-                                                    <code x-text="formatTypeAndValue(item.type, item.value)" :class="typeToClass(item.type)"></code>
-                                                    <span x-text="item.name"></span>
-                                                </li>
-                                            </template>
-                                        </ul>
-                                    </li>
-                                </template>
-                            </ul>
-                        </li>
-                    </template>
-                </ul>
-            </section>
+							<ul>
+								<template x-for="subcategory in category.subcategories">
+									<li>
+										<span x-text="subcategory.name" x-show="!editing"></span>
+                                        <div class="inline-edit" x-show="editing">
+                                            <input type="text" x-model="subcategory.name" />
+                                        </div>
+
+										<ul>
+											<template x-for="(item, index) in subcategory.criteria">
+												<li
+													x-data="{'itemid': `${category}-${subcategory}-${item.name}-${index}`}"
+												>
+													<label :for="itemid" x-show="!editing">
+														<input
+															:id="itemid"
+															:name="itemid"
+															type="checkbox"
+															x-model="checkedItems[itemid]"
+														/>
+														<code
+															x-text="formatTypeAndValue(item.type, item.value)"
+															:class="typeToClass(item.type)"
+														></code>
+														<span x-text="item.name"></span>
+													</label>
+
+                                                    <div class="inline-edit" x-show="editing">
+                                                        <input type="number" x-model="item.value" min="0" step="0.05"/>
+                                                        <input type="text" x-model="item.name" />
+                                                        <select x-model="item.type">
+                                                            <option value="0">Requisito</option>
+                                                            <option value="1">Descuento</option>
+                                                            <option value="2">Bonus</option>
+                                                        </select>
+													</div>
+												</li>
+											</template>
+										</ul>
+									</li>
+								</template>
+							</ul>
+						</li>
+					</template>
+				</ul>
+			</section>
 
 			<!-- Copy grading results -->
-            <section>
-                Resultado
-            </section>
+			<section>Resultado</section>
 		</main>
 		<footer>Página por: <a href="github.com/Nyveon">Eric K.</a></footer>
 
