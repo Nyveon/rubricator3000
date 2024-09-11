@@ -33,6 +33,12 @@
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .column-when-small {
+        flex-direction: column;
+    }
+}
+
 .flex-center {
     display: flex;
     justify-content: center;

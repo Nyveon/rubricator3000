@@ -1,3 +1,9 @@
+// node types:
+// categorical: name str, sub arr
+// criteria: name str, weight float
+// discount: name str, discount float
+// bonus: name str, bonus float
+
 interfaceSubrubric = {
     'Menú Principal': {
         'Acceder al nivel': 0.10,

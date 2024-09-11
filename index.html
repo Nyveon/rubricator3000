@@ -36,7 +36,7 @@
                 'example-2': arcadeRubric
             }),
             selectedRubric: $persist('example-0'),
-            editingName: false,
+            editing: false,
             createNewRubric: function() {
                 let newName = 'rubric-0';
                 let i = 0;
@@ -58,6 +58,9 @@
             deleteRubric: function() {
                 delete this.rubrics[this.selectedRubric];
                 this.selectedRubric = Object.keys(this.rubrics)[0];
+            },
+            switchedRubric: function() {
+               this.editing = false 
             }
         }"
 		>
@@ -70,10 +73,10 @@
 					placeholder="Nombre"
 			/></label>
 
-			<div class="flex-space">
+			<div class="flex-space column-when-small gap-half">
 				<div class="flex-center gap-half">
 					<b>Rúbrica:</b>
-					<select x-model="selectedRubric" @change="editingName=false">
+					<select x-model="selectedRubric" @change="switchedRubric">
 						<template x-for="[id, rubric] of Object.entries(rubrics)">
 							<option
 								x-bind:value="id"
@@ -94,22 +97,22 @@
 						<i data-feather="trash-2"></i>
 					</button>
 					<button
-						@click="editingName=true"
+						@click="editing=true"
 						class="info"
-						x-show="!editingName"
+						x-show="!editing"
 						x-transition
-						title="Editar nombre"
+						title="Editar"
 					>
-						<i data-feather="type"></i>
+						<i data-feather="edit"></i>
 					</button>
 				</div>
 
 				<div class="flex-center gap-half">
 					<button
-						@click="editingName=false"
+						@click="editing=false"
 						class="info"
 						x-cloak
-						x-show="editingName"
+						x-show="editing"
 						x-transition
 						x-transition:leave.duration.0ms
 						title="Finalizar edición"
@@ -122,7 +125,7 @@
 						x-model="rubrics[selectedRubric].name"
 						placeholder="Nombre"
 						x-cloak
-						x-show="editingName"
+						x-show="editing"
 						x-transition
 						x-transition:leave.duration.0ms
 					/>
@@ -130,7 +133,41 @@
 			</div>
 
 			<!-- Grade with selected rubric -->
+
+            
+            <section>
+                <div>
+                    todo: Puntos, Bonus, Nota
+                </div>
+
+                <ul>
+                    <template x-for="(subcategories, category) in rubrics[selectedRubric]['rubric']">
+                        <li>
+                            <u x-text="category"></u>
+                            <ul>
+                                <template x-for="(items, subcategory) in subcategories">
+                                    <li>
+                                        <span x-text="subcategory"></span>
+
+                                        <ul>
+                                            <template x-for="(value, item) in items">
+                                                <li>
+                                                    <span x-text="item"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </li>
+                                </template>
+                            </ul>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+
 			<!-- Copy grading results -->
+            <section>
+                Resultado
+            </section>
 		</main>
 		<footer>Página por: <a href="github.com/Nyveon">Eric K.</a></footer>
 
