@@ -147,8 +147,6 @@
 				</div>
 			</div>
 
-			<!-- Grade with selected rubric -->
-
 			<section>
 				<div>todo: Puntos, Bonus, Nota</div>
 
@@ -156,7 +154,7 @@
 					<template
 						x-for="category, index in rubrics[selectedRubric]['rubric']"
 					>
-						<li>
+						<li x-effect="feather.replace()">
 							<u x-text="category.name" x-show="!editing"></u>
 							<div class="inline-edit" x-show="editing" x-cloak>
 								<button
@@ -175,7 +173,7 @@
 								<template
 									x-for="(subcategory, index) in category.subcategories"
 								>
-									<li>
+									<li x-effect="feather.replace()">
 										<span x-text="subcategory.name" x-show="!editing"></span>
 										<div class="inline-edit" x-show="editing" x-cloak>
 											<button
@@ -241,10 +239,16 @@
 												x-show="editing"
 												x-cloak
 												x-data="{
-                                                newItem: { ...itemTemplate },
+                                                newItem: structuredClone(itemTemplate),
                                                 submitCriteria: function() {
+                                                    if (!this.newItem.name) {
+                                                        this.newItem.name = 'Nuevo Criterio'
+                                                    }
+                                                    if (!this.newItem.value) {
+                                                        this.newItem.value = 0
+                                                    }
                                                     subcategory.criteria.push(this.newItem)
-                                                    this.newItem = { ...itemTemplate }
+                                                    this.newItem = structuredClone(itemTemplate)
                                                 }
                                             }"
 											>
@@ -261,8 +265,13 @@
 													x-model="newItem.value"
 													min="0"
 													step="0.05"
+													placeholder="0"
 												/>
-												<input type="text" x-model="newItem.name" />
+												<input
+													type="text"
+													x-model="newItem.name"
+													placeholder="Nuevo Criterio"
+												/>
 												<select x-model="newItem.type">
 													<option value="0">Requisito</option>
 													<option value="1">Descuento</option>
@@ -272,9 +281,69 @@
 										</ul>
 									</li>
 								</template>
+
+								<li
+									class="inline-edit new-edit"
+									x-show="editing"
+									x-cloak
+									x-data="{
+                                        newSubcategory: structuredClone(subcategoryTemplate),
+                                        submitSubcategory: function() {
+                                            if (!this.newSubcategory.name) {
+                                                this.newSubcategory.name = 'Nueva Subcategoría'
+                                            }
+                                            category.subcategories.push(this.newSubcategory)
+                                            this.newSubcategory = structuredClone(subcategoryTemplate)
+                                        }
+                                    }"
+								>
+									<button
+										class="small-button"
+										@click="submitSubcategory()"
+										title="Crear subcategoría"
+									>
+										<i data-feather="plus-circle"></i>
+									</button>
+
+									<input
+										type="text"
+										x-model="newSubcategory.name"
+										placeholder="Nueva Subcategoría"
+									/>
+								</li>
 							</ul>
 						</li>
 					</template>
+
+					<li
+						class="inline-edit new-edit"
+						x-show="editing"
+						x-cloak
+						x-data="{
+                            newCategory: structuredClone(categoryTemplate),
+                            submitCategory: function() {
+                                if (!this.newCategory.name) {
+                                    this.newCategory.name = 'Nueva Categoría'
+                                }
+                                this.rubrics[this.selectedRubric].rubric.push(this.newCategory)
+                                this.newCategory = structuredClone(categoryTemplate)
+                            }
+                        }"
+					>
+						<button
+							class="small-button"
+							@click="submitCategory()"
+							title="Crear categoría"
+						>
+							<i data-feather="plus-circle"></i>
+						</button>
+
+						<input
+							type="text"
+							x-model="newCategory.name"
+							placeholder="Nueva Categoría"
+						/>
+					</li>
 				</ul>
 			</section>
 

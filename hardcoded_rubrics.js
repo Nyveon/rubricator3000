@@ -1,9 +1,3 @@
-const itemTemplate = {
-    value: 0,
-    name: 'Nuevo Criterio',
-    type: 0
-}
-
 const ItemType = {
 	REQUIREMENT: "0",
 	DISCOUNT: "1",
@@ -11,10 +5,26 @@ const ItemType = {
 };
 
 const ItemTypeName = {
-    [ItemType.REQUIREMENT]: "Requisito",
-    [ItemType.DISCOUNT]: "Descuento",
-    [ItemType.BONUS]: "Bonus",
-}
+	[ItemType.REQUIREMENT]: "Requisito",
+	[ItemType.DISCOUNT]: "Descuento",
+	[ItemType.BONUS]: "Bonus",
+};
+
+const itemTemplate = {
+	value: '',
+	name: '',
+	type: ItemType.REQUIREMENT,
+};
+
+const subcategoryTemplate = {
+	name: '',
+	criteria: [],
+};
+
+const categoryTemplate = {
+	name: '',
+	subcategories: [],
+};
 
 function formatTypeAndValue(type, value) {
 	const formattedValue = value.toFixed(2);
