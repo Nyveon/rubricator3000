@@ -54,8 +54,9 @@ El resultado se puede copiar directo al portapapeles.
 
 Rúbricas se puede exportar e importar como json. Esto incluye las marcas en los criterios, así que exportar una rúbrica sin marcas es como exportar un template, y exportar uno con marcas es como exportar la evaluación en sí.
 
-## Detalles
+## Detalles y consideraciones
 
 - Todas los puntajes se truncan a dos decimales, y todas las notas se truncan a un decimal luego de ser calculados. Redondear queda como responsabilidad del sistema de notas o del ayudante revisor.
 - La jerarquía es fija (categoria->subcategoría->criterio) por simplicidad.
 - Hay poca validación de los campos de input al editar una rúbrica.
+- ⚠ Las rubricas y evaluaciones se guardan en local storage, por lo que si limpias los cookies o cambias de navegador no persistirán. Siempre se debe respaldar como json!
