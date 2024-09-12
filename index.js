@@ -195,7 +195,7 @@ function getBonusSummary(rubric) {
 function getNota(rubric) {
 	const totalPossible = rubricTotalPossible(rubric);
 	const totalAchieved = rubricTotal(rubric);
-	return Math.min((totalAchieved / totalPossible) * 7, 7);
+	return Math.min(1 + (6 * totalAchieved / totalPossible), 7);
 }
 
 /*
