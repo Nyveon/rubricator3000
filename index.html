@@ -188,42 +188,50 @@
 				/></label>
 			</div>
 
-			<div class="flex-center gap-half" x-show="!editing">
-				<b>Rúbrica:</b>
-				<select x-model="selectedRubric" @change="switchedRubric">
-					<template x-for="[id, rubric] of Object.entries(rubrics)">
-						<option
-							x-bind:value="id"
-							x-text="rubric.name"
-							:selected="selectedRubric===id"
-						></option>
-					</template>
-				</select>
+			<div class="flex-center gap-half column-when-small" x-show="!editing">
+				<div class="flex-center gap-half">
+					<b>Rúbrica:</b>
+					<select x-model="selectedRubric" @change="switchedRubric">
+						<template x-for="[id, rubric] of Object.entries(rubrics)">
+							<option
+								x-bind:value="id"
+								x-text="rubric.name"
+								:selected="selectedRubric===id"
+							></option>
+						</template>
+					</select>
+				</div>
 
-				<button @click="createNewRubric()" title="Nueva rúbrica">
-					<i data-feather="plus-circle"></i>
-				</button>
-				<button @click="isUploadModalOpen = true" title="Cargar rúbrica">
-					<i data-feather="upload"></i>
-				</button>
-				<button
-					@click="isModalOpen = true"
-					class="danger"
-					title="Eliminar rúbrica"
-				>
-					<i data-feather="trash-2"></i>
-				</button>
-				<button @click="resetRubric()" class="yellow" title="Resetear rúbrica">
-					<i data-feather="refresh-ccw"></i>
-				</button>
-				<button
-					@click="editing=true;feather.replace();"
-					class="info"
-					x-transition
-					title="Editar"
-				>
-					<i data-feather="edit"></i>
-				</button>
+				<div>
+					<button @click="createNewRubric()" title="Nueva rúbrica">
+						<i data-feather="plus-circle"></i>
+					</button>
+					<button @click="isUploadModalOpen = true" title="Cargar rúbrica">
+						<i data-feather="upload"></i>
+					</button>
+					<button
+						@click="isModalOpen = true"
+						class="danger"
+						title="Eliminar rúbrica"
+					>
+						<i data-feather="trash-2"></i>
+					</button>
+					<button
+						@click="resetRubric()"
+						class="yellow"
+						title="Resetear rúbrica"
+					>
+						<i data-feather="refresh-ccw"></i>
+					</button>
+					<button
+						@click="editing=true;feather.replace();"
+						class="info"
+						x-transition
+						title="Editar"
+					>
+						<i data-feather="edit"></i>
+					</button>
+				</div>
 			</div>
 
 			<div class="flex-center gap-half">
