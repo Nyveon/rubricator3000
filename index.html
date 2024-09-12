@@ -262,7 +262,7 @@
 						<li x-effect="feather.replace()">
 							<div x-show="!editing">
 								<code
-									x-text="`${categoryTotal(category).toFixed(2)}/${categoryTotalPossible(category).toFixed(2)}`"
+									x-text="categoryScore(category)"
 								></code>
 								<u x-text="category.name"></u>
 							</div>
@@ -290,7 +290,7 @@
 									<li x-effect="feather.replace()">
 										<div x-show="!editing">
 											<code
-												x-text="`${subcategoryTotal(subcategory).toFixed(2)}/${subcategoryTotalPossible(subcategory).toFixed(2)}`"
+												x-text="subcategoryScore(subcategory)"
 											></code>
 											<span x-text="subcategory.name"></span>
 										</div>

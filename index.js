@@ -61,6 +61,17 @@ function subcategoryTotalPossible(subcategory) {
 	}, 0);
 }
 
+function subcategoryScore(subcategory) {
+    const total = subcategoryTotal(subcategory).toFixed(2);
+    const totalPosible = subcategoryTotalPossible(subcategory).toFixed(2);
+
+    if (total == 0 && totalPosible == 0) {
+        return "";
+    } else {
+        return `${total}/${totalPosible}`;
+    }
+}
+
 function subcategoryTotal(subcategory) {
 	const possible = subcategoryTotalPossible(subcategory);
 
@@ -85,6 +96,17 @@ function categoryTotalPossible(category) {
 	return category.subcategories.reduce((acc, subcategory) => {
 		return acc + subcategoryTotalPossible(subcategory);
 	}, 0);
+}
+
+function categoryScore(category) {
+    const total = categoryTotal(category).toFixed(2);
+    const totalPosible = categoryTotalPossible(category).toFixed(2);
+
+    if (total == 0 && totalPosible == 0) {
+        return '';
+    } else {
+        return `${total}/${totalPosible}`;
+    }
 }
 
 function categoryTotal(category) {
@@ -130,9 +152,9 @@ function getDiscountSummary(rubric) {
 			}
 
 			if (subcategoryHasDescuentos) {
-				categoryDescuentos += `• ${subcategory.name} (${categoryTotal(
-					category
-				).toFixed(2)}/${categoryTotalPossible(category).toFixed(
+				categoryDescuentos += `• ${subcategory.name} (${subcategoryTotal(
+					subcategory
+				).toFixed(2)}/${subcategoryTotalPossible(subcategory).toFixed(
 					2
 				)}):\n${subcategoryDescuentos}`;
 				categoryHasDescuentos = true;
