@@ -117,12 +117,12 @@ function getDiscountSummary(rubric) {
 
 			for (const criteria of subcategory.criteria) {
 				if (!criteria.checked && criteria.type === ItemType.REQUIREMENT) {
-					subcategoryDescuentos += `  -${criteria.value.toFixed(2)} | ${
+					subcategoryDescuentos += `  -${parseFloat(criteria.value).toFixed(2)} | ${
 						criteria.name
 					}\n`;
 					subcategoryHasDescuentos = true;
 				} else if (criteria.checked && criteria.type === ItemType.DISCOUNT) {
-                    subcategoryDescuentos += `  -${criteria.value.toFixed(2)} | ${
+                    subcategoryDescuentos += `  -${parseFloat(criteria.value).toFixed(2)} | ${
                         criteria.name
                     }\n`;
                     subcategoryHasDescuentos = true;
@@ -163,7 +163,7 @@ function getBonusSummary(rubric) {
 
 			for (const criteria of subcategory.criteria) {
 				if (criteria.checked && criteria.type === ItemType.BONUS) {
-					subcategoryBonos += `  +${criteria.value.toFixed(2)} | ${
+					subcategoryBonos += `  +${parseFloat(criteria.value).toFixed(2)} | ${
 						criteria.name
 					}\n`;
 					subcategoryHasBonos = true;
