@@ -215,8 +215,8 @@ function getBonusSummary(rubric) {
 }
 
 function getNota(rubric) {
-	const totalPossible = rubricTotalPossible(rubric);
-	const totalAchieved = rubricTotal(rubric);
+	const totalPossible = parseFloat(rubricTotalPossible(rubric));
+	const totalAchieved = parseFloat(rubricTotal(rubric));
 	return Math.min(1 + (6 * totalAchieved / totalPossible), 7);
 }
 
@@ -233,7 +233,7 @@ Nota: <span x-text="getNota()"></span>/7.00
 function buildOutput(rubric, revisadoPor) {
 
     let output = '';
-    output += `Nota: ${getNota(rubric).toFixed(2)}/7.00\n`;
+    output += `Nota: ${(Math.trunc(getNota(rubric) * 10) / 10).toFixed(1)}/7.0\n`;
     output += `Puntaje: ${rubricTotal(rubric).toFixed(2)}/${rubricTotalPossible(rubric).toFixed(2)}\n`;
     output += `Rúbrica: ${rubric.name}\n`;
 
